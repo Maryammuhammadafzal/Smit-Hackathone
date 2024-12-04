@@ -58,7 +58,7 @@ let login = () => {
           const uid = user.uid;
           // page redirection
           setTimeout(() => {
-            window.location.href = "../index.html"
+            window.location.href = "../../index.html"
           }, 1000)
           // ...
         }
@@ -139,7 +139,7 @@ let googleSignIn = () => {
           const uid = user.uid;
           // page redirection
           setTimeout(() => {
-            window.location.href = "../index.html"
+            window.location.href = "../../index.htm"
           }, 1000)
         }
       });
@@ -194,30 +194,3 @@ googleBtn.addEventListener('click', googleSignIn)
 forgetPass.addEventListener('click', forgetPassword)
 
 
-// signOut
-
-// signOut(auth).then(() => {
-//   //Succesfully signed in
-//   const Toast = Swal.mixin({
-//     toast: true,
-//     position: "top-end",
-//     showConfirmButton: false,
-//     timer: 3000,
-//     timerProgressBar: true,
-//     didOpen: (toast) => {
-//       toast.onmouseenter = Swal.stopTimer;
-//       toast.onmouseleave = Swal.resumeTimer;
-//     },
-//   });
-//   Toast.fire({
-//     icon: "success",
-//     title: "log out successfully",
-//   });
-// }).catch((error) => {
-//   const errorMessage = error.message
-//   Swal.fire({
-//     icon: "error",
-//     title: "Error",
-//     text: `${errorMessage}`,
-//   });
-// });

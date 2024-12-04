@@ -73,7 +73,7 @@ event.preventDefault()
 
           // redirect to dashboard
           setTimeout(() => {
-            window.location.href = "../index.html"
+            window.location.href = "../../index.html"
           }, 3000)
         }
 
