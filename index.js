@@ -43,41 +43,41 @@ const blogCategory = document.getElementById("blogCategory").value
 let blogBox = document.getElementById("blogBox")
 
 
-// Cloudinary
-const cloudName = "diq2krkmt";
-const unsignedUploadPreset = "oibcek4o";
-let imgUrl;
-let uploadImage = ()=>{
-modalFile.addEventListener("change", () => {
-  let file = modalFile.files[0];
-  let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-  let fd = new FormData();
-  fd.append("upload_preset", unsignedUploadPreset);
-  fd.append("file", file);
+// // Cloudinary
+// const cloudName = "diq2krkmt";
+// const unsignedUploadPreset = "oibcek4o";
+// let imgUrl;
+// let uploadImage = ()=>{
+// modalFile.addEventListener("change", () => {
+//   let file = modalFile.files[0];
+//   let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+//   let fd = new FormData();
+//   fd.append("upload_preset", unsignedUploadPreset);
+//   fd.append("file", file);
 
-  fetch(url, {
-    method: "POST",
-    body: fd,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      let resourceURl = data.secure_url;
+//   fetch(url, {
+//     method: "POST",
+//     body: fd,
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       let resourceURl = data.secure_url;
 
-      let transformedUrl = resourceURl.replace(
-        "upload/",
-        "upload/h_200,w_200/r_max/c_crop,g_face"
-      );
-      console.log("uploaded succesfully", resourceURl);
-      imgUrl = resourceURl;
+//       let transformedUrl = resourceURl.replace(
+//         "upload/",
+//         "upload/h_200,w_200/r_max/c_crop,g_face"
+//       );
+//       console.log("uploaded succesfully", resourceURl);
+//       imgUrl = resourceURl;
         
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+//     })
+//     .catch((e) => {
+//       console.log(e);
+//     });
  
-});
-}
-uploadImage()
+// });
+// }
+// uploadImage()
 
 
 //  modal
@@ -95,10 +95,10 @@ window.closeModal = document.getElementById('closeModal').addEventListener('clic
 
 
 
-const categories = Array.from(blogCategory); 
+const categories = ["Ai" , "Technology" , "Design"] 
 async function fetchAllBlogs() {
   const blogs = [];
-
+  
   try {
     for (const category of categories) {
       const categoryCollection = collection(db, category); 
@@ -122,7 +122,7 @@ function displayBlogs(blogs) {
   blogs.forEach((blog) => {
    
 
-    blogBox.innerHTML = `
+    blogBox.innerHTML += `
       <div class="card d-flex flex-row">
                                 <div class="card-body">
                                         <div class="card-header" id="blogTime">${blog.time}</div>
@@ -130,7 +130,7 @@ function displayBlogs(blogs) {
                                   <p class="card-text" id="blogDis">${blog.discription}.</p>
                                 </div>
                                 <div class="cardImage w-50" style="height: 300px;">
-                                        <img src="${imgUrl}}" id="blogImage" alt="Card image cap" style="height: 300px; width: 100%;">
+                                        <img src="./Images/logo.jpg" id="blogImage" alt="Card image cap" style="height: 300px; width: 100%;">
                                 </div>
                               </div>
     `;
