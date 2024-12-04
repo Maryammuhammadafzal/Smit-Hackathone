@@ -6,7 +6,7 @@ import {
         doc,
         setDoc,
         Timestamp
-} from "../firebase.js"
+} from "./firebase.js"
 
 let uid = localStorage.getItem('uid')
 
