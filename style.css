@@ -1,0 +1,94 @@
+
+
+/* Modal Styles */
+.modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+        justify-content: center;
+        align-items: center;
+      }
+      
+      /* Modal Content */
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 40%;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      
+      /* Close Button */
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #333;
+      }
+      #modalTitle{
+        width: 90%;
+        height: 40px;
+        margin: 15px 0;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      /* Form Styles */
+      textarea {
+        width: 90%;
+        height: 100px;
+        margin: 7px 0;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      
+      button {
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      
+      button:hover {
+        background-color: #0056b3;
+      }
+    
+
+@media only screen and (max-width: 992px) { 
+        .card{
+                display: flex;
+                flex-direction: column !important;
+
+        }
+       .cardImage{
+        width: 100% !important;
+       }
+       .cardImage img{
+        width: 100% !important;
+       }
+ }
+
+
+@media only screen and (max-width:757px) { 
+        .blogSection{
+                display: flex;
+                justify-content: space-between !important;
+
+        }
+   
+ }
