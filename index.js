@@ -33,13 +33,14 @@ let modalTitle = document.getElementById('modalTitle')
 let modalDis = document.getElementById('modalDis')
 let modalFile = document.getElementById('modalFile')
 
-let blogBox = document.getElementById('blogBox')
+
 let blogTime = document.getElementById('blogTime')
 let blogTitle = document.getElementById('blogTitle')
 let blogDis = document.getElementById('blogDis')
 let blogImage = document.getElementById('blogImage')
 const blogCategory = document.getElementById("blogCategory").value
 
+let blogBox = document.getElementById("blogBox")
 
 
 // Cloudinary
@@ -68,11 +69,7 @@ modalFile.addEventListener("change", () => {
       );
       console.log("uploaded succesfully", resourceURl);
       imgUrl = resourceURl;
-        // let img = new Image();
-        // img.src = transformedUrl;
-
-        // blogImage.appendChild(img);
-      // }
+        
     })
     .catch((e) => {
       console.log(e);
@@ -120,14 +117,12 @@ async function fetchAllBlogs() {
 
 // Function to display blogs on the page
 function displayBlogs(blogs) {
-  const blogsContainer = document.getElementById("blogsContainer"); 
 
-  blogsContainer.innerHTML = ""; 
 
   blogs.forEach((blog) => {
    
-let blogBox = document.getElementById(blogBox)
-        blogready = `
+
+    blogBox.innerHTML = `
       <div class="card d-flex flex-row">
                                 <div class="card-body">
                                         <div class="card-header" id="blogTime">${blog.time}</div>
@@ -139,15 +134,15 @@ let blogBox = document.getElementById(blogBox)
                                 </div>
                               </div>
     `;
-    blogBox.innerHTML = blogready;
    
   });
 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+
         fetchAllBlogs(); 
-      });
+   
+console.log(blogBox.innerHTML);
 
 
 
@@ -196,7 +191,7 @@ let createBlog = () => {
                                 modalTitle = ""
                                 modalDis = ""
                                 modalFile = ""
-                                showAllPosts()
+                                
 
                               } catch (error) {
                                 console.error("Error adding user: ", error);
@@ -213,3 +208,5 @@ let createBlog = () => {
 
 }
 createBlogBtn && createBlogBtn.addEventListener('click', createBlog)
+
+   
