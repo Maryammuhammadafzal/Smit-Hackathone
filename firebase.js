@@ -33,15 +33,15 @@ import {getDatabase, ref, set ,child , get , update , remove, onValue } from 'ht
 
 // firebase config
 const firebaseConfig = {
-   apiKey: "AIzaSyDhO38c1rgHPNNLF3gD9xmN2fZOTpxNrcE",
-   authDomain: "smit-mini-hackathon-11685.firebaseapp.com",
-   projectId: "smit-mini-hackathon-11685",
-   storageBucket: "smit-mini-hackathon-11685.firebasestorage.app",
-   messagingSenderId: "165559002353",
-   appId: "1:165559002353:web:2a6762596a5a8e97e7b550",
-   measurementId: "G-05PRX0E2HC"
- };
-
+  apiKey: "AIzaSyDhO38c1rgHPNNLF3gD9xmN2fZOTpxNrcE",
+  authDomain: "smit-mini-hackathon-11685.firebaseapp.com",
+  databaseURL: "https://smit-mini-hackathon-11685-default-rtdb.firebaseio.com",
+  projectId: "smit-mini-hackathon-11685",
+  storageBucket: "smit-mini-hackathon-11685.firebasestorage.app",
+  messagingSenderId: "165559002353",
+  appId: "1:165559002353:web:2a6762596a5a8e97e7b550",
+  measurementId: "G-05PRX0E2HC"
+};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();

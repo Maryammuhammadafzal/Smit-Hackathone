@@ -5,208 +5,240 @@ import {
         getDocs,
         doc,
         setDoc,
-        Timestamp
-} from "./firebase.js"
+        Timestamp,
+        deleteDoc,
+        get,
+        set,
+        ref, child, update, remove, onValue,
+        getDatabase
+} from "./firebase.js";
 
-let uid = localStorage.getItem('uid')
+let uid = localStorage.getItem("uid");
 
-let started = document.getElementById('started')
-started.addEventListener('click', () => {
-        window.location.href = "./Login-Form/login.html"
-})
 
-console.log(new Date().toLocaleString());
 
+
+let started = document.getElementById("started");
+started.addEventListener("click", () => {
+        window.location.href = "./public/Login-Form/login.html";
+});
+
+// console.log(new Date().toLocaleString());
 
 const currentDate = new Date();
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const day = currentDate.getDate(); 
-const month = monthNames[currentDate.getMonth()]; 
+const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+];
+const day = currentDate.getDate();
+const month = monthNames[currentDate.getMonth()];
 const formattedDate = `${month} ${day}`;
 
-
-
-
 //  ----------Dom Elements-----------------
-let modal = document.getElementById('modal')
-let modalTitle = document.getElementById('modalTitle')
-let modalDis = document.getElementById('modalDis')
-let modalFile = document.getElementById('modalFile')
+let modal = document.getElementById("modal");
+let modalTitle = document.getElementById("modalTitle");
+let modalDis = document.getElementById("modalDis");
+let modalFile = document.getElementById("modalFile");
 
+let blogTime = document.getElementById("blogTime");
+let blogTitle = document.getElementById("blogTitle");
+let blogDis = document.getElementById("blogDis");
+let blogImage = document.getElementById("blogImage");
 
-let blogTime = document.getElementById('blogTime')
-let blogTitle = document.getElementById('blogTitle')
-let blogDis = document.getElementById('blogDis')
-let blogImage = document.getElementById('blogImage')
-const blogCategory = document.getElementById("blogCategory").value
-
-let blogBox = document.getElementById("blogBox")
-
-
-// // Cloudinary
-// const cloudName = "diq2krkmt";
-// const unsignedUploadPreset = "oibcek4o";
-// let imgUrl;
-// let uploadImage = ()=>{
-// modalFile.addEventListener("change", () => {
-//   let file = modalFile.files[0];
-//   let url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-//   let fd = new FormData();
-//   fd.append("upload_preset", unsignedUploadPreset);
-//   fd.append("file", file);
-
-//   fetch(url, {
-//     method: "POST",
-//     body: fd,
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       let resourceURl = data.secure_url;
-
-//       let transformedUrl = resourceURl.replace(
-//         "upload/",
-//         "upload/h_200,w_200/r_max/c_crop,g_face"
-//       );
-//       console.log("uploaded succesfully", resourceURl);
-//       imgUrl = resourceURl;
-        
-//     })
-//     .catch((e) => {
-//       console.log(e);
-//     });
- 
-// });
-// }
-// uploadImage()
-
+let blogBox = document.getElementById("blogBox");
 
 //  modal
 // Close Modal When Clicking Outside of Modal Content
-window.addEventListener('click', event => {
+window.addEventListener("click", (event) => {
         if (event.target === modal) {
-                modal.style.display = 'none' // Hide modal
+                modal.style.display = "none"; // Hide modal
         }
-})
+});
 // Close Modal When Clicking on close button
-window.closeModal = document.getElementById('closeModal').addEventListener('click', () => {
-        postContainer.style.display = 'none'
-})
+window.closeModal = document
+        .getElementById("closeModal")
+        .addEventListener("click", () => {
+                postContainer.style.display = "none";
+        });
 
 
+const categories = ["Ai", "Technology", "Design"];
+const categorySelect = document.getElementById("blogCategory");
+let selectedCategory = "";
+categorySelect.addEventListener("change", () => {
+        selectedCategory = categorySelect.value;
+        console.log("Inside event listener:", selectedCategory);
+});
 
+console.log("Outside event listener:", selectedCategory);
 
-const categories = ["Ai" , "Technology" , "Design"] 
-async function fetchAllBlogs() {
-  const blogs = [];
-  
-  try {
-    for (const category of categories) {
-      const categoryCollection = collection(db, category); 
-      const querySnapshot = await getDocs(categoryCollection); 
+const blogContainer = document.getElementById('blogBox'); 
+
+// Function to fetch and display blog posts
+const displayBlogs = async () => {
+        try {
+          const blogContainer = document.getElementById('blogBox'); // Container where blogs will be displayed
+          blogContainer.innerHTML = ''; // Clear any existing content
       
-      querySnapshot.forEach((doc) => {
-        blogs.push({ ...doc.data(), category, id: doc.id }); 
-      });
-    }
-
-    displayBlogs(blogs);
-  } catch (error) {
-    console.error("Error fetching blogs: ", error);
-  }
-}
-
-// Function to display blogs on the page
-function displayBlogs(blogs) {
-
-
-  blogs.forEach((blog) => {
-   
-
-    blogBox.innerHTML += `
-      <div class="card d-flex flex-row">
-                                <div class="card-body">
-                                        <div class="card-header" id="blogTime">${blog.time}</div>
-                                  <h5 class="card-title" id="blogTitle">${blog.usertitle}</h5>
-                                  <p class="card-text" id="blogDis">${blog.discription}.</p>
-                                </div>
-                                <div class="cardImage w-50" style="height: 300px;">
-                                        <img src="./Images/logo.jpg" id="blogImage" alt="Card image cap" style="height: 300px; width: 100%;">
-                                </div>
-                              </div>
-    `;
-   
-  });
-
-}
-
-
-        fetchAllBlogs(); 
-   
-console.log(blogBox.innerHTML);
-
-
-
-
-
-
-
-
-
-
-let createBlogBtn = document.getElementById('createBlog')
-let createBlog = () => {
-        modal.style.display = 'flex'
-
-        ///---------------------Firebase Database work ----------------//
-        let addData = async() => {
-                window.submitBlog = document.getElementById('submitBlog')
-                window.submitBlog.addEventListener('click', async() => {
-                        try {
-                                const userRef = doc(db, blogCategory, uid); 
-                                await setDoc(userRef, {
-                                        usertitle: modalTitle.value,
-                                        discription: modalDis.value,
-                                        time : formattedDate,
-                                });
-                            
-                                   //Succesfully creat post
-                                   const Toast = Swal.mixin({
-                                        toast: true,
-                                        position: 'top-end',
-                                        showConfirmButton: false,
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        didOpen: toast => {
-                                                toast.onmouseenter = Swal.stopTimer
-                                                toast.onmouseleave = Swal.resumeTimer
-                                        }
-                                })
-                                Toast.fire({
-                                        icon: 'success',
-                                        title: 'Post Created Successfully'
-                                })
-
-                                modal.style.display = 'none'
-                                
-                                modalTitle = ""
-                                modalDis = ""
-                                modalFile = ""
-                                
-
-                              } catch (error) {
-                                console.error("Error adding user: ", error);
-                                Swal.fire({
-                                        title: 'Error',
-                                        text: 'Unsuccessful',
-                                        icon: 'error'
-                                })
-                              }
-                })
+          // Query all blog posts (assuming 'blog' is a collection or a subcollection of posts)
+          const querySnapshot = await getDocs(collection(db, 'blog'));  // Replace 'blog' with your actual collection name
+      
+          querySnapshot.forEach((doc) => {
+            const postData = doc.data(); // Get data for each post
+            const postDiv = document.createElement('div');
+            postDiv.classList.add('post'); // Add some class for styling
+      
+            // Construct the HTML for the post
+            postDiv.innerHTML = `
+              <h3>${postData.usertitle}</h3>
+              <p>${postData.description}</p>
+              <p><small>Published: ${new Date(postData.time).toLocaleString()}</small></p>
+              <p><small>Category: ${postData.category}</small></p>
+              <button id="delete" onclick="deletePost('${uid}')">Delete Post</button>
+            `;
+      
+            // Append the post to the container
+            blogContainer.appendChild(postDiv);
+          });
+      
+        } catch (error) {
+          console.error('Error fetching blog posts: ', error);
         }
+      };
+      
+      // Call displayBlogs to load posts
+      displayBlogs();
 
-        addData()
 
-}
-createBlogBtn && createBlogBtn.addEventListener('click', createBlog)
+let createBlogBtn = document.getElementById("createBlog");
+let createBlog = () => {
+        modal.style.display = "flex";
 
-   
+        // Firebase Database work
+        let addData = async () => {
+                try {
+                        submitBlog.addEventListener("click", async () => {
+                                if (!modalTitle.value || !modalDis.value || !selectedCategory) {
+                                        Swal.fire({
+                                                title: "Error",
+                                                text: "All fields are required",
+                                                icon: "error",
+                                        });
+                                        return;
+                                } else {
+                                        try {
+                                                await setDoc(doc(db, `blog/${selectedCategory}${uid}`), {
+                                                        usertitle: modalTitle.value,
+                                                        description: modalDis.value,
+                                                        time: formattedDate,
+                                                        category: selectedCategory,
+                                                });
+
+                                                // Successfully created post
+                                                Swal.fire({
+                                                        icon: "success",
+                                                        title: "Post Created Successfully",
+                                                        toast: true,
+                                                        position: "top-end",
+                                                        showConfirmButton: false,
+                                                        timer: 3000,
+                                                });
+
+                                                // Reset modal and inputs
+                                                modal.style.display = "none";
+                                                modalTitle.value = "";
+                                                modalDis.value = "";
+                                        } catch (error) {
+                                                console.error("Error adding user: ", error);
+                                                Swal.fire({
+                                                        title: "Error",
+                                                        text: "Unsuccessful",
+                                                        icon: "error",
+                                                });
+                                        }
+                                }
+                        }, { once: true });
+                } catch (err) {
+                        console.error(err);
+                }
+        };
+
+        addData();
+};
+
+// Add event listener for creating a blog
+createBlogBtn && createBlogBtn.addEventListener("click", createBlog);
+
+
+const searchPosts = () => {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase(); // Get the search input value
+        const blogContainer = document.getElementById('blogBox'); // The container where posts are displayed
+        const allPosts = blogContainer.getElementsByClassName('post'); // Get all the posts
+      
+        // Loop through each post and hide or display based on search query
+        Array.from(allPosts).forEach((postDiv) => {
+          const title = postDiv.querySelector('h3').textContent.toLowerCase(); // Get the title of the post
+          const description = postDiv.querySelector('p').textContent.toLowerCase(); // Get the description of the post
+          const category = postDiv.querySelector('small').textContent.toLowerCase(); // Get the category of the post
+      
+          // Show or hide post based on matching search query
+          if (title.includes(searchInput) || description.includes(searchInput) || category.includes(searchInput)) {
+            postDiv.style.display = ''; // Show post
+          } else {
+            postDiv.style.display = 'none'; // Hide post
+          }
+        });
+      };
+      
+      // Add event listener to search input
+      document.getElementById('searchInput').addEventListener('input', searchPosts);
+      document.getElementById('searchInputBig').addEventListener('input', searchPosts);
+
+
+      // Function to delete a post from Firestore
+window.deletePost = async () => {
+        try {
+          // Get reference to the post in Firestore
+          const postRef = doc(db, `blog/${selectedCategory}${uid}`);
+          
+          // Delete the post from Firestore
+          await deleteDoc(postRef);
+      
+          // Optionally, remove the post from the UI
+          const postDiv = document.getElementById(uid); 
+          if (postDiv) {
+            postDiv.remove(); // Remove post from the DOM
+          }
+      
+          // Show success message
+          Swal.fire({
+            icon: "success",
+            title: "Post Deleted Successfully",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+
+
+        } catch (error) {
+          console.error('Error deleting post:', error);
+          Swal.fire({
+            icon: "error",
+            title: "Error deleting post",
+            text: "Something went wrong.",
+          });
+        }
+      };
+
+    

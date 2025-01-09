@@ -25,7 +25,7 @@ let signupBtn = document.getElementById('signupBtn')
 let signup = (event) => {
 event.preventDefault()
   // ----------------Firebase Signup Function-------------------// 
-  createUserWithEmailAndPassword(auth, signupEmail.value, signupPassword.value)
+  createUserWithEmailAndPassword(auth, signupEmail.value, signupPassword.value , uid)
     .then((userCredential) => {
       // Signed up 
       const user = userCredential.user;
@@ -73,7 +73,7 @@ event.preventDefault()
 
           // redirect to dashboard
           setTimeout(() => {
-            window.location.href = "../../index.html"
+            window.location.href = "../Login-Form/login.html"
           }, 3000)
         }
 

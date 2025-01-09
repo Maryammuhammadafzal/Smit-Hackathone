@@ -16,7 +16,7 @@
 
 }
 
-.card {
+.post-form {
   border-radius: 10px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
   width: 400px;
@@ -25,17 +25,17 @@
   padding: 10px 30px;
 }
 
-.card_title {
+#postTitle {
   text-align: center;
   padding: 10px;
 }
 
-.card_title h1 {
+#postTitle h1 {
   font-size: 26px;
   font-weight: bold;
 }
 
-.form input {
+.postForm input {
   margin: 10px 0;
   width: 100%;
   background-color: #e2e2e2;
@@ -45,7 +45,7 @@
   border-radius: 4px;
 }
 
-.form button {
+.postForm button {
   background-color: #4796ff;
   color: #ffffff;
   font-size: 16px;

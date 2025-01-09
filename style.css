@@ -1,5 +1,10 @@
 
-
+.post{
+  border: 1px solid rgb(35, 34, 34);
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+}
 /* Modal Styles */
 .modal {
         display: none; /* Hidden by default */

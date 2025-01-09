@@ -28,8 +28,8 @@ let gotoSinupPage = () => {
 signupLink && signupLink.addEventListener('Click' , gotoSinupPage)
 
 //------------------login Finction --------------------//
-let login = () => {
-
+let login = (e) => {
+  e.preventDefault()
 
   signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value)
     .then((userCredential) => {
@@ -157,34 +157,45 @@ let googleSignIn = () => {
 
 // ----------------------------Forget Password----------------------//
 let forgetPassword = () => {
-  sendPasswordResetEmail(auth, email)
-  .then(() => {
-     //Succesfully signed in
-     const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      },
-    });
-    Toast.fire({
-      icon: "success",
-      title: "Login successfully",
-    });
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+       try{
+         const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Email Sent Successfully",
+        });
+      }
+      catch(error)  {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: `${errorMessage}`,
+        });
+      };     
+    }
+    else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `User is not signed up`,
+      });
+    }
   })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: `${errorMessage}`,
-    });
-  });
+
   }
 
 //---------------------Event Listener -----------------//

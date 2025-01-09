@@ -13,11 +13,6 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  background-image: radial-gradient(
-    circle farthest-corner at 10% 20%,
-    rgba(253, 101, 133, 1) 0%,
-    rgba(255, 211, 165, 1) 90%
-  );
 }
 
 .card {
@@ -88,4 +83,9 @@
     display: flex;
     margin: 0 auto;
     gap: 1rem;
+}
+ 
+#signinLink{
+  color: #4796ff;
+  cursor: pointer;
 }
