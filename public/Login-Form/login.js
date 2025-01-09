@@ -23,7 +23,7 @@ let forgetPass = document.getElementById('forgetPass')
 
 //------------------GO To Sinup page Finction --------------------//
 let gotoSinupPage = () => {
-  window.location.href = '../Signup-form/signup.html'
+  window.location.href = '../Signup-Form/signup.html'
 }
 signupLink && signupLink.addEventListener('Click' , gotoSinupPage)
 
